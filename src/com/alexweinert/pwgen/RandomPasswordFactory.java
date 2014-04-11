@@ -2,7 +2,7 @@ package com.alexweinert.pwgen;
 
 public class RandomPasswordFactory implements IPasswordFactory {
 
-    public class Builder {
+    public static class Builder {
         private IRandom randomGenerator;
 
         private boolean mayIncludeAmbiguous = true;
@@ -129,6 +129,7 @@ public class RandomPasswordFactory implements IPasswordFactory {
                 char newCharacter = this.getAdmissableChar();
                 passwordBuilder.append(newCharacter);
             }
+            password = passwordBuilder.toString();
         } while (!this.isAdmissablePassword(password));
 
         return password;
@@ -200,5 +201,13 @@ public class RandomPasswordFactory implements IPasswordFactory {
             return false;
         }
         return true;
+    }
+
+    public static void main(String[] args) {
+        RandomPasswordFactory factory = (new Builder(new RandomGenerator())).mustIncludeUppercase()
+                .mustIncludeSymbols().create();
+        for (int i = 0; i < 20; ++i) {
+            System.out.println(factory.getPassword(8));
+        }
     }
 }
