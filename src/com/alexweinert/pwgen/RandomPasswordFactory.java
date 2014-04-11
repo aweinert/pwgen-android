@@ -1,6 +1,6 @@
 package com.alexweinert.pwgen;
 
-public class RandomPasswordFactory implements IPasswordFactory {
+public class RandomPasswordFactory extends PasswordFactory {
 
     public static class Builder {
         private IRandom randomGenerator;

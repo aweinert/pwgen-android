@@ -1,8 +1,6 @@
 package com.alexweinert.pwgen;
 
-import java.security.acl.LastOwnerException;
-
-public class PronouncablePasswordFactory implements IPasswordFactory {
+public class PronouncablePasswordFactory extends PasswordFactory {
 
     private class pwElement {
         String str;
