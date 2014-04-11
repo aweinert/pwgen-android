@@ -58,30 +58,12 @@ public class PronouncablePasswordFactory extends PasswordFactory {
             new pwElement("z", true, false, false), // { "z", CONSONANT }
     };
 
-    /** Pool from which to pick symbols */
-    private final String pw_symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
-    /** Pool from which to pick ambiguous characters */
-    private final String pw_ambiguous = "B8G6I1l0OQDS5Z2";
-    /** Pool from which to pick digits */
-    private final String pw_digits = "0123456789";
-    /** Pool from which to pick uppercase characters */
-    private final String pw_uppers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    /** The random number generator used for picking random characters from a pool */
-    private IRandom randomGenerator;
-
-    /** True if the generated password may include ambiguous characters */
-    private boolean mayIncludeAmbiguous;
-
-    /** True if the generated password may include vowels */
-    private boolean mayIncludeVowels;
-
-    /** True if the generated password must include symbols */
-    private boolean mustIncludeSymbols;
-    /** True if the generated password must include digits */
-    private boolean mustIncludeDigits;
-    /** True if the generated password must include uppercase characters */
-    private boolean mustIncludeUppercase;
+    protected PronouncablePasswordFactory(IRandom randomGenerator, boolean mayIncludeAmbiguous,
+            boolean mayIncludeVowels, boolean mustIncludeSymbols, boolean mustIncludeDigits,
+            boolean mustIncludeUppercase) {
+        super(randomGenerator, mayIncludeAmbiguous, mayIncludeVowels, mustIncludeSymbols, mustIncludeDigits,
+                mustIncludeUppercase);
+    }
 
     @Override
     public String getPassword(int length) {
@@ -218,13 +200,8 @@ public class PronouncablePasswordFactory extends PasswordFactory {
     }
 
     public static void main(String[] args) {
-        PronouncablePasswordFactory factory = new PronouncablePasswordFactory();
-        factory.randomGenerator = new RandomGenerator();
-        factory.mayIncludeAmbiguous = true;
-        factory.mayIncludeVowels = true;
-        factory.mustIncludeDigits = true;
-        factory.mustIncludeSymbols = false;
-        factory.mustIncludeUppercase = true;
+        PasswordFactory factory = (new Builder(new RandomGenerator())).mustIncludeUppercase().mustIncludeDigits()
+                .mustBePronouncable().create();
         for (int i = 0; i < 20; ++i) {
             System.out.println(factory.getPassword(8));
         }
