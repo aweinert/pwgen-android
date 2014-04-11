@@ -13,7 +13,7 @@ public class RandomGenerator implements IRandom {
 
     @Override
     public int getRandomInt(int max) {
-        return this.randomGenerator.nextInt(max + 1);
+        return this.randomGenerator.nextInt(max);
     }
 
 }

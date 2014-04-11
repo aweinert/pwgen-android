@@ -152,7 +152,7 @@ public class RandomPasswordFactory implements IPasswordFactory {
     }
 
     private char getRandomCharacterFromPool() {
-        int max = this.characterPool.length() - 1;
+        int max = this.characterPool.length();
         int position = this.randomGenerator.getRandomInt(max);
         return characterPool.charAt(position);
     }
