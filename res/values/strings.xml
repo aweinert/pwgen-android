@@ -4,5 +4,10 @@
     <string name="app_name">Pwgen</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string-array name="optionChoices">
+        <item>Must</item>
+        <item>May</item>
+        <item>Must not</item>
+    </string-array>
 
 </resources>
