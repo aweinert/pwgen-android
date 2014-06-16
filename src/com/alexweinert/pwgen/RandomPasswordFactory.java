@@ -5,10 +5,11 @@ public class RandomPasswordFactory extends PasswordFactory {
     /** The pool from which to pick characters during password creation */
     private final String characterPool;
 
-    protected RandomPasswordFactory(IRandom randomGenerator, boolean mayIncludeAmbiguous, boolean mayIncludeVowels,
-            boolean mustIncludeSymbols, boolean mustIncludeDigits, boolean mustIncludeUppercase) {
+    protected RandomPasswordFactory(IRandom randomGenerator, TriValueBoolean mayIncludeAmbiguous,
+            TriValueBoolean mayIncludeVowels, TriValueBoolean mustIncludeSymbols, TriValueBoolean mustIncludeDigits,
+            TriValueBoolean mustIncludeUppercase, TriValueBoolean includeLowercase) {
         super(randomGenerator, mayIncludeAmbiguous, mayIncludeVowels, mustIncludeSymbols, mustIncludeDigits,
-                mustIncludeUppercase);
+                mustIncludeUppercase, includeLowercase);
         this.characterPool = this.getCharacters();
     }
 
@@ -30,13 +31,13 @@ public class RandomPasswordFactory extends PasswordFactory {
     private String getCharacters() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(pw_lowers);
-        if (this.mustIncludeDigits) {
+        if (this.includeDigits == TriValueBoolean.MUST) {
             stringBuilder.append(pw_digits);
         }
-        if (this.mustIncludeUppercase) {
+        if (this.includeUppercase == TriValueBoolean.MUST) {
             stringBuilder.append(pw_uppers);
         }
-        if (this.mustIncludeSymbols) {
+        if (this.includeSymbols == TriValueBoolean.MUST) {
             stringBuilder.append(pw_symbols);
         }
 
@@ -59,10 +60,10 @@ public class RandomPasswordFactory extends PasswordFactory {
 
     private boolean isAdmissableChar(char character) {
         CharSequence currentCharSequence = String.valueOf(character);
-        if (!this.mayIncludeAmbiguous && this.pw_ambiguous.contains(currentCharSequence)) {
+        if (this.includeAmbiguous == TriValueBoolean.MUSTNOT && this.pw_ambiguous.contains(currentCharSequence)) {
             return false;
         }
-        if (!this.mayIncludeVowels && this.pw_vowels.contains(currentCharSequence)) {
+        if (this.includeVowels == TriValueBoolean.MUSTNOT && this.pw_vowels.contains(currentCharSequence)) {
             return false;
         }
         return true;
@@ -83,13 +84,13 @@ public class RandomPasswordFactory extends PasswordFactory {
             }
         }
 
-        if (this.mustIncludeUppercase && !includesUppercase) {
+        if (this.includeUppercase == TriValueBoolean.MUST && !includesUppercase) {
             return false;
         }
-        if (this.mustIncludeDigits && !includesDigits) {
+        if (this.includeDigits == TriValueBoolean.MUST && !includesDigits) {
             return false;
         }
-        if (this.mustIncludeSymbols && !includesSymbols) {
+        if (this.includeSymbols == TriValueBoolean.MUST && !includesSymbols) {
             return false;
         }
         return true;

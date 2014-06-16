@@ -58,11 +58,11 @@ public class PronouncablePasswordFactory extends PasswordFactory {
             new pwElement("z", true, false, false), // { "z", CONSONANT }
     };
 
-    protected PronouncablePasswordFactory(IRandom randomGenerator, boolean mayIncludeAmbiguous,
-            boolean mayIncludeVowels, boolean mustIncludeSymbols, boolean mustIncludeDigits,
-            boolean mustIncludeUppercase) {
+    protected PronouncablePasswordFactory(IRandom randomGenerator, TriValueBoolean mayIncludeAmbiguous,
+            TriValueBoolean mayIncludeVowels, TriValueBoolean mustIncludeSymbols, TriValueBoolean mustIncludeDigits,
+            TriValueBoolean mustIncludeUppercase, TriValueBoolean includeLowercase) {
         super(randomGenerator, mayIncludeAmbiguous, mayIncludeVowels, mustIncludeSymbols, mustIncludeDigits,
-                mustIncludeUppercase);
+                mustIncludeUppercase, includeLowercase);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class PronouncablePasswordFactory extends PasswordFactory {
                 }
 
                 String toAdd = candidateElement.str;
-                if (this.mustIncludeUppercase && (isFirst || candidateElement.isConsonant)
+                if (this.includeUppercase == TriValueBoolean.MUST && (isFirst || candidateElement.isConsonant)
                         && this.randomGenerator.getRandomInt(10) < 2) {
                     char[] toAddCharArray = candidateElement.str.toCharArray();
                     toAddCharArray[0] = Character.toUpperCase(toAddCharArray[0]);
@@ -106,7 +106,7 @@ public class PronouncablePasswordFactory extends PasswordFactory {
                     break;
                 }
 
-                if (this.mustIncludeDigits) {
+                if (this.includeDigits == TriValueBoolean.MUST) {
                     if (!isFirst && this.randomGenerator.getRandomInt(10) < 3) {
                         char digit = this.getDigit();
                         passwordBuilder.append(digit);
@@ -118,7 +118,7 @@ public class PronouncablePasswordFactory extends PasswordFactory {
                     }
                 }
 
-                if (this.mustIncludeSymbols) {
+                if (this.includeSymbols == TriValueBoolean.MUST) {
                     if (!isFirst && this.randomGenerator.getRandomInt(10) < 2) {
                         char symbol = this.getSymbol();
                         passwordBuilder.append(symbol);
@@ -151,7 +151,8 @@ public class PronouncablePasswordFactory extends PasswordFactory {
         do {
             returnValue = this.pw_digits.charAt(this.randomGenerator.getRandomInt(this.pw_digits.length()));
             // If this may include ambiguous characters, one iteration is enough
-        } while (this.mayIncludeAmbiguous ? false : this.pw_ambiguous.contains(String.valueOf(returnValue)));
+        } while (this.includeAmbiguous != TriValueBoolean.MUSTNOT ? false : this.pw_ambiguous.contains(String
+                .valueOf(returnValue)));
         return returnValue;
     }
 
@@ -160,7 +161,8 @@ public class PronouncablePasswordFactory extends PasswordFactory {
         do {
             returnValue = this.pw_symbols.charAt(this.randomGenerator.getRandomInt(this.pw_symbols.length()));
             // If this may include ambiguous characters, one iteration is enough
-        } while (this.mayIncludeAmbiguous ? false : this.pw_ambiguous.contains(String.valueOf(returnValue)));
+        } while (this.includeAmbiguous != TriValueBoolean.MUSTNOT ? false : this.pw_ambiguous.contains(String
+                .valueOf(returnValue)));
         return returnValue;
     }
 
@@ -187,13 +189,13 @@ public class PronouncablePasswordFactory extends PasswordFactory {
             }
         }
 
-        if (this.mustIncludeUppercase && !includesUppercase) {
+        if (this.includeUppercase == TriValueBoolean.MUST && !includesUppercase) {
             return false;
         }
-        if (this.mustIncludeDigits && !includesDigits) {
+        if (this.includeDigits == TriValueBoolean.MUST && !includesDigits) {
             return false;
         }
-        if (this.mustIncludeSymbols && !includesSymbols) {
+        if (this.includeSymbols == TriValueBoolean.MUST && !includesSymbols) {
             return false;
         }
         return true;
