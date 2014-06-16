@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -23,8 +24,43 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.setupReloadButtonHandler();
+        this.populateOptionSpinners();
+        this.setupSpinnerHandlers();
+
         this.updatePasswordFactory();
         this.createAndShowNewPassword();
+    }
+
+    private void setupReloadButtonHandler() {
+        this.findViewById(R.id.reloadButton).setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                createAndShowNewPassword();
+            }
+        });
+
+    }
+
+    private void setupSpinnerHandlers() {
+        for (Spinner spinner : this.getOptionSpinners()) {
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    updatePasswordFactory();
+                    createAndShowNewPassword();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+                    // Does not happen in this context
+                }
+            });
+        }
+
     }
 
     private void updatePasswordFactory() {
@@ -110,24 +146,6 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
-        this.populateOptionSpinners();
-        for (Spinner spinner : this.getOptionSpinners()) {
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                @Override
-                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                    updatePasswordFactory();
-                    createAndShowNewPassword();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) {
-                    // Does not happen in this context
-                }
-            });
-        }
-
         return true;
     }
 
