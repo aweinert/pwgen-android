@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -101,7 +102,8 @@ public class MainActivity extends Activity {
     }
 
     private void createAndShowNewPassword() {
-
+        String password = this.passwordFactory.getPassword(8);
+        ((TextView) this.findViewById(R.id.passwordView)).setText(password);
     }
 
     @Override
