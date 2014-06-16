@@ -102,7 +102,7 @@
                     android:id="@+id/symbolsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nonalphanum symbols"
+                    android:text="Symbols"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Spinner
@@ -120,7 +120,7 @@
                     android:id="@+id/ambiguousTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ambiguous symbols"
+                    android:text="Ambiguous"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Spinner
