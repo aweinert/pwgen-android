@@ -25,7 +25,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/passwordView"
         android:layout_marginRight="10dp"
-        android:src="@android:drawable/ic_lock_power_off" />
+        android:src="@drawable/ic_action_refresh" />
 
     <ScrollView
         android:layout_width="wrap_content"
